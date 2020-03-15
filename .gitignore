@@ -1,0 +1,7 @@
+*.swp
+stanford-corenlp-full-2018-10-05/*
+*.p
+./data/output/ner/*
+./data/output/kg/*
+./data/output/caches/*
+

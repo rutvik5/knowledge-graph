@@ -1,0 +1,38 @@
+Objective
+Create a knowledge graph from unstructured text using different NLP techniques.
+
+Approach
+
+Building a knowledge graph from unstructured data requires extracting entities in the data and relationships between them. These triplets can then be provided to a graph database to build the graph. Hence, building a knowledge graph requires at least Named Entity Recognition and Relation Extraction. However, additional processing can be done to improve the quality of graph generated. The process used to generate the graph is described below.
+
+1. Named Entity Recognition
+Named Entity Recognition (NER) refers  to recognizing mentions of named entities (i.e, people, places, organizations, etc). In order to perform NER, the input data is tokenized to words and tagged with Parts-of-Speech (POS). Then, using a simple grammar, entities are chunked together. A chunked entity represents one named entities and performs on similar lines as using the binary=true option of the nltk.ne_chunk() method. Current grammar supports recognition of simple Noun Phrases (NP). Since the rest of the code is independent of the actual type of named entity recognised, this chunked named entities are sufficient, and the accuracy can be further improved by using a more complex grammar for chunking which can recognise clauses, noun phrases, prepositional phrases, verb phrases etc.
+
+NER is considered a solved problem, and a higher accuracy can be achieved by using pre-trained classifiers, as combination of chunk grammars can not encompass all named entities. Hence, code supports performing NER via the NLTK’s ne.chunk(); spacy and Stanford ‘s NER APIs. All the methods can also be called to see difference between tht NER performed.
+
+2. Coreference resolution
+Most texts depend heavily on personal pronouns (he/she/it) to refer to entities mentioned previously and the same entity can be referenced by several names (person can be refered to by first or last name). Thus, for a sentence “Donald Trump is president of United States. He was elected to office in 2016” the relation extractor extracts (He,elected to,office in 2016). Now a query on knowledge graph such as “who was elected to officce in 2016” would return ‘he’ . Hence, to improve the accuracy of knowledge graph, code resolves these coreferences. The code takes help of stanford core nlp to detect coreferences. The coreferences are returned as a dict of list of dicts where each key-value pair in the outer dictionary refer to  correlations of same entity. Code then uses identified Named Entities (NE) to determine which entity should be used to replace all entities in a given list and it is stored. The code then identifies the sentence position and index of each required replacement, and creates a sentence_wise_replacements variabe which stores sentence wise list of tuples of coreference that needs to be replaced with original entity. Coreferences in each sentence are then resolved, ensuring that overlapping replacements occur only if valid.
+
+3. Relation Extraction
+This step consists of extracting semantic relationships from the input text in form of triplets. The triplets are represented as follows - “Entity 1 - Relation - Entity2”. For example, “Steve - husband of- Stacy” is a triplet. Since the output sometimes contains unnecessary or irrelevant triplets we perform some post processing to get a more accurate output.  
+
+4. Post processing
+The output obtained after performing Relation Extraction is represented in a csv file with the format - (Entity1, Relationship, Entity2).  The following is an example that is obtained from a sample input:
+
+Entity1: Godfather
+Relationship: is
+Entity2: 1972 crime film directed by Francis Ford Coppola
+
+To visualize the structured text using Graph Commons, we need to convert the csv file into a format that contains the types of each entity. The type of each entity has already been identified in the Named Entity Recognition step. All the entity types are stored in entity set. The type of entity1 in the above example is Godfather (PERSON) whereas there can be multiple types for entity2. In the above example, there are a couple of entity types namely- 1972 (DATE), Francis Ford Coppola (PERSON). 
+To identify this as different entity types, we have parsed entity2 and identified each entity type present in that entity. In case of multiple entity occurrences, we add a new row corresponding to each entity type. Hence, we will have 2 rows containing entity2- the first containing DATE and the second containing PERSON. This will help in providing more accurate results.
+In cases where either of entity1 or any word in entity2 is not present in the entity set, we drop that particular row from the csv file.
+Finally, the result is stored in a new csv file that contains columns as: (type_entity1, entity1, relation, type_entity2, entity2). This csv format required for visualization of the graphs 
+
+5. Visualization
+
+Graph Commons is a collaborative platform for mapping, analyzing and publishing data-networks. The csv file obtained in the above step is imported on to the Graph Commons platform which creates nodes, relationships and helps to analyze the information regarding each node. The information regarding all the independent entities can be viewed on the screen. Additionally, the information regarding the relation of 2 entities available as well.
+
+
+
+
+

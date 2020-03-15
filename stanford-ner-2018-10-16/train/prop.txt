@@ -1,0 +1,19 @@
+trainFile = train/dummy-custom.tsv
+serializeTo = dummy-ner-model.ser.gz
+map = word=0,answer=1
+
+useClassFeature=true
+useWord=true
+useNGrams=true
+noMidNGrams=true
+maxNGramLeng=6
+usePrev=true
+useNext=true
+useSequences=true
+usePrevSequences=true
+maxLeft=1
+useTypeSeqs=true
+useTypeSeqs2=true
+useTypeySequences=true
+wordShape=chris2useLC
+useDisjunctive=true

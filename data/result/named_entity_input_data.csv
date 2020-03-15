@@ -1,0 +1,11 @@
+Type,Entity 1,Relationship,Type,Entity2
+ORG,Paramount Pictures, obtained ,O, rights to novel for price of $ 80 000
+ORG,Godfather, is ,NORP, American
+ORG,Godfather, is ,DATE, 1972 crime film
+ORG,Paramount Pictures, obtained ,O, rights for price of $ 80 000
+ORG,Paramount Pictures, obtained ,O, rights for price
+ORG,Paramount Pictures, obtained ,O, rights to novel
+ORG,Godfather, is ,DATE, 1972 American crime film
+ORG,Paramount Pictures, obtained ,O, rights to novel for price
+ORG,Paramount Pictures, obtained ,O, rights
+ORG,Godfather, is ,NORP, 1972 American crime film
